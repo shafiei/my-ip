@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My IP Address Information</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+
+        .ip-container {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+        }
+    </style>
+    <script>
+        function getIPAddress() {
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('ip').textContent = data.ip;
+                    getLocationInfo(data.ip);
+                })
+                .catch(error => console.log(error));
+        }
+
+        function getLocationInfo(ip) {
+            fetch(`http://ip-api.com/json/${ip}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('isp').textContent = data.isp;
+                    document.getElementById('city').textContent = data.city;
+                    document.getElementById('region').textContent = data.regionName;
+                    document.getElementById('country').textContent = data.country;
+                })
+                .catch(error => console.log(error));
+        }
+    </script>
+</head>
+<body onload="getIPAddress()">
+    <div class="container">
+        <h1 class="text-center">My IP Address Information</h1>
+        <div class="row justify-content-center">
+            <div class="col-md-6 ip-container">
+                <h3>Your IP Address:</h3>
+                <p id="ip"></p>
+                <h3>IP Information:</h3>
+                <p><strong>ISP:</strong> <span id="isp"></span></p>
+                <p><strong>City:</strong> <span id="city"></span></p>
+                <p><strong>Region:</strong> <span id="region"></span></p>
+                <p><strong>Country:</strong> <span id="country"></span></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
